@@ -1,5 +1,7 @@
 # ---- Build artifacts ----
+# Catch any build dir layout: build/, build-vs/, build-debug/, out/, etc.
 build/
+build-*/
 out/
 cmake-build-*/
 _deps/
@@ -8,11 +10,32 @@ CMakeCache.txt
 CMakeUserPresets.json
 cmake_install.cmake
 install_manifest.txt
+compile_commands.json
 Testing/
-*.vcxproj.user
+
+# ---- Visual Studio / MSBuild ----
 *.sln
+*.vcxproj.user
 *.suo
 *.user
+*.opensdf
+*.sdf
+*.aps
+*.ncb
+*.tlog
+*.ilk
+*.idb
+*.iobj
+*.ipdb
+*.log
+*.lastbuildstate
+*.unsuccessfulbuild
+
+# ---- Xcode ----
+DerivedData/
+xcuserdata/
+*.xcuserstate
+*.xcworkspace/
 
 # ---- JUCE-generated ----
 JuceLibraryCode/
@@ -44,8 +67,20 @@ Thumbs.db
 *.aaxplugin/
 *.app/
 
+# ---- Large media / scratch we don't want shipped through git ----
+*.wav
+*.aif
+*.aiff
+*.flac
+*.mp3
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
 # ---- Local config ----
 .env
+.env.local
 .local/
 
 # ---- Docs are local-only (use --skip-worktree on tracked ones) ----

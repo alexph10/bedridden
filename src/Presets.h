@@ -15,6 +15,9 @@ struct FactoryPreset
 
 inline std::vector<FactoryPreset> getFactoryPresets()
 {
+    // Preset names are deliberately parts of the head, in homage to Blood
+    // Bucket's own naming convention ("a pointless experiment in synthetic
+    // stupidity... presets are named after parts of the human head").
     return {
         {
             "INIT",
@@ -28,8 +31,8 @@ inline std::vector<FactoryPreset> getFactoryPresets()
             }
         },
         {
-            // Classic Blood Bucket digital crunch.
-            "XOR CRUNCH",
+            // Classic Blood Bucket digital crunch — XOR'd squares.
+            "SKULL",
             {
                 { "oscA_wave", 2 }, { "oscA_coarse",  0 },  { "oscA_level", 1.0f },
                 { "oscB_wave", 1 }, { "oscB_coarse",  7 },  { "oscB_level", 0.9f },
@@ -42,7 +45,7 @@ inline std::vector<FactoryPreset> getFactoryPresets()
         },
         {
             // Bell / ring-mod metallic.
-            "BELL RING",
+            "EAR",
             {
                 { "oscA_wave", 0 }, { "oscA_coarse",  7 }, { "oscA_level", 1.0f },
                 { "oscB_wave", 0 }, { "oscB_coarse", 12 }, { "oscB_level", 1.0f },
@@ -54,8 +57,8 @@ inline std::vector<FactoryPreset> getFactoryPresets()
             }
         },
         {
-            // S&H glitch lead.
-            "S&H GLITCH",
+            // S&H glitch lead — chattery, broken-radio.
+            "TONGUE",
             {
                 { "oscA_wave", 4 }, { "oscA_level", 0.9f },
                 { "oscB_wave", 1 }, { "oscB_coarse", -5 }, { "oscB_level", 1.0f },
@@ -67,8 +70,8 @@ inline std::vector<FactoryPreset> getFactoryPresets()
             }
         },
         {
-            // DX-style PM stack.
-            "DX STACK",
+            // DX-style PM stack — soft and bell-toned.
+            "BRAIN",
             {
                 { "oscA_wave", 0 }, { "oscA_coarse",  0 }, { "oscA_level", 1.0f },
                 { "oscB_wave", 0 }, { "oscB_coarse", 12 }, { "oscB_level", 1.0f },
@@ -77,6 +80,45 @@ inline std::vector<FactoryPreset> getFactoryPresets()
                 { "envA_attack", 0.005f }, { "envA_decay", 0.80f }, { "envA_sustain", 0.4f }, { "envA_release", 0.60f },
                 { "envB_attack", 0.005f }, { "envB_decay", 0.80f }, { "envB_sustain", 0.4f }, { "envB_release", 0.60f },
                 { "out_gain", 0.7f }
+            }
+        },
+        {
+            // Hard-sync sting — high & nasal, the way a kazoo would scream.
+            "NOSE",
+            {
+                { "oscA_wave", 1 }, { "oscA_coarse",  0 }, { "oscA_level", 1.0f },
+                { "oscB_wave", 1 }, { "oscB_coarse",  5 }, { "oscB_fine", 7 }, { "oscB_level", 1.0f },
+                { "oscC_wave", 1 }, { "oscC_coarse",  0 }, { "oscC_level", 1.0f },
+                { "algorithm",10 }, { "mod_target",   0 }, { "mod_depth",  0.75f },
+                { "envA_attack", 0.001f }, { "envA_decay", 0.40f }, { "envA_sustain", 0.5f }, { "envA_release", 0.30f },
+                { "envB_attack", 0.001f }, { "envB_decay", 0.20f }, { "envB_sustain", 0.7f }, { "envB_release", 0.30f },
+                { "out_gain", 0.6f }
+            }
+        },
+        {
+            // Threshold square gnarl — chunky PWM-ish growl.
+            "JAW",
+            {
+                { "oscA_wave", 3 }, { "oscA_coarse", -12 }, { "oscA_level", 1.0f },
+                { "oscB_wave", 2 }, { "oscB_coarse",   0 }, { "oscB_level", 1.0f },
+                { "oscC_wave", 2 }, { "oscC_coarse", -12 }, { "oscC_level", 1.0f },
+                { "algorithm",11 }, { "mod_target",   0 },  { "mod_depth",  0.9f },
+                { "envA_attack", 0.005f }, { "envA_decay", 0.30f }, { "envA_sustain", 0.6f }, { "envA_release", 0.40f },
+                { "envB_attack", 0.005f }, { "envB_decay", 0.50f }, { "envB_sustain", 0.4f }, { "envB_release", 0.40f },
+                { "out_gain", 0.55f }
+            }
+        },
+        {
+            // AbsMul drone — slow, fluttering, with the eyelid open just a bit.
+            "EYE",
+            {
+                { "oscA_wave", 0 }, { "oscA_coarse",  0 }, { "oscA_level", 0.9f },
+                { "oscB_wave", 0 }, { "oscB_coarse",  3 }, { "oscB_fine", 11 }, { "oscB_level", 0.9f },
+                { "oscC_wave", 0 }, { "oscC_coarse", -12 }, { "oscC_level", 1.0f },
+                { "algorithm", 3 }, { "mod_target",   0 }, { "mod_depth",  0.6f },
+                { "envA_attack", 0.80f }, { "envA_decay", 1.50f }, { "envA_sustain", 0.8f }, { "envA_release", 2.50f },
+                { "envB_attack", 1.20f }, { "envB_decay", 1.80f }, { "envB_sustain", 0.7f }, { "envB_release", 3.00f },
+                { "out_gain", 0.65f }
             }
         }
     };

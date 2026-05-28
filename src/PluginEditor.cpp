@@ -1,5 +1,6 @@
 #include "PluginEditor.h"
 #include "Presets.h"
+#include "gui/LookAndFeel.h"
 
 namespace bedridden {
 
@@ -56,18 +57,37 @@ BedriddenEditor::~BedriddenEditor()
 
 void BedriddenEditor::paint (juce::Graphics& g)
 {
-    g.fillAll (juce::Colour (0xff141414));
+    using namespace gui::palette;
 
-    g.setColour (juce::Colour (0xffe22d2d));
-    g.setFont (juce::Font (juce::FontOptions (22.0f, juce::Font::bold)));
-    g.drawFittedText ("bedridden", getLocalBounds().removeFromTop (30),
+    g.fillAll (juce::Colour (bg));
+
+    // Top nameplate band — a darker strip with a red hairline under it, the
+    // way old SynthEdit synths used to slap a header on.
+    auto band = getLocalBounds().removeFromTop (46);
+    g.setColour (juce::Colour (panel));
+    g.fillRect (band);
+    g.setColour (juce::Colour (bloodDk));
+    g.fillRect (band.removeFromBottom (1));
+
+    // Wordmark.
+    g.setColour (juce::Colour (blood));
+    g.setFont (juce::Font (juce::FontOptions (24.0f, juce::Font::bold)));
+    g.drawFittedText ("BEDRIDDEN", getLocalBounds().removeFromTop (30),
                       juce::Justification::centred, 1);
 
-    g.setColour (juce::Colour (0xff808080));
-    g.setFont (juce::Font (juce::FontOptions (10.0f)));
+    // Tagline — straight quote from the Blood Bucket KVR page, because it's
+    // the whole spiritual mission statement of this plugin.
+    g.setColour (juce::Colour (grime));
+    g.setFont (juce::Font (juce::FontOptions (10.0f, juce::Font::italic)));
     g.drawFittedText ("a pointless experiment in synthetic stupidity",
                       getLocalBounds().removeFromTop (46).removeFromBottom (14),
                       juce::Justification::centred, 1);
+
+    // Small "v1" stamp in the top-left, just to make it feel like an artifact.
+    g.setColour (juce::Colour (grime));
+    g.setFont (juce::Font (juce::FontOptions (8.0f, juce::Font::bold)));
+    g.drawText ("v1.0", getLocalBounds().removeFromTop (46).reduced (10, 16),
+                juce::Justification::left, false);
 }
 
 void BedriddenEditor::resized()
