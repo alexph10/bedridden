@@ -1,5 +1,6 @@
-// Tiny hand-rolled test runner — no external test framework needed yet.
-// Run via `ctest` after building, or just execute the binary directly.
+// Hand-rolled assertions so we don't pull in a test framework just for a
+// dozen checks. If/when we add doctest, lift these into TEST_CASEs and
+// delete this file's `main`.
 
 #include "dsp/Algorithm.h"
 

@@ -18,6 +18,7 @@ target_sources(Bedridden PRIVATE
     PluginProcessor.h
     PluginEditor.cpp
     PluginEditor.h
+    Presets.h
 
     dsp/Oscillator.h
     dsp/Algorithm.h
@@ -29,6 +30,11 @@ target_sources(Bedridden PRIVATE
     gui/LookAndFeel.cpp
     gui/OscPanel.h
     gui/OscPanel.cpp
+    gui/AlgorithmPanel.h
+    gui/AlgorithmPanel.cpp
+    gui/EnvelopePanel.h
+    gui/EnvelopePanel.cpp
+    gui/Scope.h
 )
 
 target_include_directories(Bedridden PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

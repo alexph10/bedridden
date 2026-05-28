@@ -11,7 +11,9 @@ static inline Algorithm to_cpp(BBAlgorithm a) noexcept
 
 static inline AlgorithmState& to_cpp(BBAlgorithmState* s) noexcept
 {
-    // Layout-compatible by design (two floats, same order).
+    // BBAlgorithmState and AlgorithmState are deliberately the same two
+    // floats in the same order, so this reinterpret is safe. If you ever
+    // add a field to one, add it to the other.
     return *reinterpret_cast<AlgorithmState*>(s);
 }
 

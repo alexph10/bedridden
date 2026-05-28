@@ -10,8 +10,11 @@ BedriddenProcessor::BedriddenProcessor()
         .withOutput ("Output", juce::AudioChannelSet::stereo(), true)),
       apvts (*this, nullptr, "PARAMS", createLayout())
 {
-    // Monophonic for now — polyphony lands in a later step.
-    synth.addVoice (new BBVoice (apvts));
+    // 8 voices is plenty for a synth this gnarly. juce::Synthesiser
+    // handles voice stealing for us (oldest note loses).
+    constexpr int kNumVoices = 8;
+    for (int i = 0; i < kNumVoices; ++i)
+        synth.addVoice (new BBVoice (apvts));
     synth.addSound (new BBSound());
 }
 
@@ -33,6 +36,17 @@ void BedriddenProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     juce::ScopedNoDenormals noDenormals;
     buffer.clear();
     synth.renderNextBlock (buffer, midi, 0, buffer.getNumSamples());
+
+    // Mono-sum the output and hand it to the scope. Doing this here means
+    // the scope sees post-everything audio — exactly what the user hears.
+    if (buffer.getNumChannels() > 0)
+    {
+        const float* L = buffer.getReadPointer (0);
+        const float* R = buffer.getNumChannels() > 1 ? buffer.getReadPointer (1) : L;
+        const int n = buffer.getNumSamples();
+        for (int i = 0; i < n; ++i)
+            scopeBuffer.push (0.5f * (L[i] + R[i]));
+    }
 }
 
 juce::AudioProcessorEditor* BedriddenProcessor::createEditor()

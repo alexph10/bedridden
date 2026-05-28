@@ -4,7 +4,8 @@
 
 namespace bedridden {
 
-/// A trivial sound that says "yes, play me on any MIDI channel/note".
+/// Says "yes" to every note on every channel. We don't need split/layer
+/// behaviour, so this is as simple as it gets.
 class BBSound : public juce::SynthesiserSound
 {
 public:

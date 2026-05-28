@@ -5,8 +5,8 @@
 
 namespace bedridden::gui {
 
-/// One vertical column of controls for a single oscillator
-/// (wave selector + coarse / fine / level).
+/// One oscillator's worth of controls (wave / coarse / fine / level)
+/// stacked in a vertical strip. We use three of these side-by-side.
 class OscPanel : public juce::Component
 {
 public:

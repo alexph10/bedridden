@@ -1,8 +1,8 @@
-/*  BedriddenDSP — pure-C ABI for the Bedridden engine.
+/*  BedriddenDSP — plain C ABI wrapper around the bedridden engine.
  *
- *  This header is intentionally C-only so the resulting BedriddenDSP.dll can
- *  be consumed from C, C++, Python (ctypes), Rust (libc), etc. without
- *  pulling in JUCE.
+ *  Stays pure C on purpose: anything that can talk to a C library can use
+ *  this — Python via ctypes, Rust, another DAW host, even another VST. No
+ *  JUCE leaks out through this header.
  */
 
 #ifndef BEDRIDDEN_DSP_H
@@ -22,7 +22,8 @@ extern "C" {
   #define BB_API __attribute__((visibility("default")))
 #endif
 
-/* Must match bedridden::dsp::Algorithm in Algorithm.h */
+/* Has to stay in lockstep with bedridden::dsp::Algorithm. If you add
+ * one in the C++ enum, add the matching BB_ALG_* here too. */
 typedef enum {
     BB_ALG_RING       = 0,
     BB_ALG_ADD        = 1,

@@ -3,6 +3,8 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_audio_utils/juce_audio_utils.h>
 
+#include "gui/Scope.h"
+
 namespace bedridden {
 
 class BedriddenProcessor : public juce::AudioProcessor
@@ -35,8 +37,13 @@ public:
     void getStateInformation (juce::MemoryBlock&) override;
     void setStateInformation (const void*, int) override;
 
-    // ---- Parameters ----
+    // All knob state lives in here — the GUI binds to it via attachments,
+    // and `getStateInformation` round-trips it for preset save/load.
     juce::AudioProcessorValueTreeState apvts;
+
+    // Audio thread writes into this, the GUI Timer reads from it.
+    // Public because the editor needs direct access to construct the Scope.
+    ScopeBuffer scopeBuffer;
 
 private:
     static juce::AudioProcessorValueTreeState::ParameterLayout createLayout();

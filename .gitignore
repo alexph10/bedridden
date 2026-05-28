@@ -47,3 +47,6 @@ Thumbs.db
 # ---- Local config ----
 .env
 .local/
+
+# ---- Docs are local-only (use --skip-worktree on tracked ones) ----
+docs/

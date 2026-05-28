@@ -7,9 +7,9 @@ namespace bedridden::dsp {
 
 enum class Wave { Sine = 0, Saw, Square, Triangle, Noise };
 
-/// Lightweight phase-accumulator oscillator. Supports plain rendering and
-/// phase-modulation. Set frequency via `setFrequency`; render one sample at
-/// a time with `next` / `nextPM`.
+/// Bare-bones phase-accumulator osc. No anti-aliasing, no oversampling —
+/// the gnarly aliased character is half the appeal of a Blood Bucket-style
+/// synth. If we ever want a clean mode, chowdsp_utils has a drop-in PolyBLEP.
 class Oscillator
 {
 public:
@@ -29,7 +29,7 @@ public:
 
     void resetPhase (double p = 0.0) noexcept { phase = p; }
 
-    /// Render next sample with no modulation.
+    /// One sample, no modulation.
     float next() noexcept
     {
         const auto y = shape (phase);
@@ -37,7 +37,8 @@ public:
         return y;
     }
 
-    /// Render next sample with phase-modulation in radians (e.g. for PM/FM).
+    /// One sample, but the phase is nudged by `phaseMod` radians first.
+    /// This is the workhorse for PM and "FM" (which is really PM).
     float nextPM (float phaseMod) noexcept
     {
         const auto p = wrap (phase + phaseMod * (1.0 / juce_two_pi));
@@ -81,7 +82,8 @@ private:
 
     float noise() noexcept
     {
-        // Tiny xorshift32 — cheap and allocation-free in the audio thread.
+        // xorshift32 — three shifts and a few XORs. No allocations,
+        // no syscalls, safe to call from the audio thread.
         rng ^= rng << 13; rng ^= rng >> 17; rng ^= rng << 5;
         return ((int32_t) rng) / (float) 0x7fffffff;
     }

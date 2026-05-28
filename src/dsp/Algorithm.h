@@ -6,29 +6,32 @@
 
 namespace bedridden::dsp {
 
-/// The "Blood Bucket" personality: how Osc A and Osc B are combined into a
-/// single modulator that drives Osc C.
+/// The whole personality of the synth lives here: 12 ways to smash Osc A
+/// and Osc B together into a single value that drives Osc C.
+/// Reordering this list is a breaking change — the index is what gets
+/// stored in the preset/state and what the GUI dropdown maps to.
 enum class Algorithm : int
 {
-    Ring = 0,   // M = A * B                — bell / metallic
-    Add,        // M = (A + B) * 0.5        — beating
-    Sub,        // M = A - B                — phasey
-    AbsMul,     // M = |A| * sign(B)        — half-wave grit
-    Min,        // M = min(A, B)            — folded
-    Max,        // M = max(A, B)            — folded
-    Xor,        // bitwise XOR on quantised samples — digital crunch
-    And,        // bitwise AND              — glitchy lo-fi
-    SampleHold, // sample A whenever B crosses zero — aliased noise
-    PhaseMod,   // M = sin(A + B)           — DX-style FM feel
-    HardSync,   // sgn(A) gates B (sync-ish)
-    Threshold,  // M = (A > B) ? +1 : -1
+    Ring = 0,   // M = A * B                          bell-y, metallic
+    Add,        // M = (A + B) * 0.5                  beating, chorus-y
+    Sub,        // M = A - B                          phasey
+    AbsMul,     // M = |A| * sign(B)                  half-wave grit
+    Min,        // M = min(A, B)                      folded
+    Max,        // M = max(A, B)                      folded the other way
+    Xor,        // bitwise XOR on the quantised ints  digital crunch
+    And,        // bitwise AND                        glitchy and lo-fi
+    SampleHold, // grab A every time B crosses zero   aliased noise
+    PhaseMod,   // M = sin(A + B)                     DX-style FM feel
+    HardSync,   // sgn(A) flips B                     sync-ish
+    Threshold,  // M = (A > B) ? +1 : -1              square/PWM hybrid
     Count
 };
 
 namespace detail {
+    // Bitwise ops on floats don't really mean anything, so we squash the
+    // signal into int16 range first and then untangle it on the way out.
     inline int32_t quantise (float x) noexcept
     {
-        // Map [-1, 1] -> int16 range for bitwise ops.
         x = std::clamp (x, -1.f, 1.f);
         return (int32_t) std::lrintf (x * 32767.f);
     }
@@ -39,7 +42,9 @@ namespace detail {
     }
 }
 
-/// Stateful per-voice context for algorithms that need memory (e.g. S&H).
+/// Per-voice scratch space for the algorithms that need to remember
+/// something between samples — S&H needs the last latched value, hard
+/// sync needs B's previous sign, etc.
 struct AlgorithmState
 {
     float  sampleHeld = 0.f;
@@ -64,7 +69,8 @@ inline float combine (Algorithm a, float A, float B, AlgorithmState& st) noexcep
         case Algorithm::And:     return dequantise (quantise (A) & quantise (B));
         case Algorithm::SampleHold:
         {
-            // Latch A on rising zero-crossing of B.
+            // Whenever B swings from negative to positive, freeze A.
+            // The held value is what we hand back until the next crossing.
             if (st.prevB <= 0.f && B > 0.f) st.sampleHeld = A;
             st.prevB = B;
             return st.sampleHeld;
