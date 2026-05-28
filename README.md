@@ -1,3 +1,3 @@
 #### bedridden (wip)
 
-3-oscillator VST3/AU instrument plugin with a whole buncha knobs
+3-oscillator vst3/au instrument plugin with a whole buncha knobs
