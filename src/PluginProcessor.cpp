@@ -10,9 +10,9 @@ BedriddenProcessor::BedriddenProcessor()
         .withOutput ("Output", juce::AudioChannelSet::stereo(), true)),
       apvts (*this, nullptr, "PARAMS", createLayout())
 {
-    // TODO: add voices + sound when BBVoice/BBSound are implemented.
-    // for (int i = 0; i < 8; ++i) synth.addVoice (new BBVoice (apvts));
-    // synth.addSound (new BBSound());
+    // Monophonic for now — polyphony lands in a later step.
+    synth.addVoice (new BBVoice (apvts));
+    synth.addSound (new BBSound());
 }
 
 void BedriddenProcessor::prepareToPlay (double sampleRate, int /*samplesPerBlock*/)

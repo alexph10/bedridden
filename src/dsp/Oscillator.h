@@ -2,8 +2,6 @@
 
 #include <cmath>
 #include <cstdint>
-#include <numbers>
-#include <random>
 
 namespace bedridden::dsp {
 
@@ -49,7 +47,7 @@ public:
     }
 
 private:
-    static constexpr double juce_two_pi = 2.0 * std::numbers::pi;
+    static constexpr double juce_two_pi = 6.283185307179586;
 
     void updateIncrement() noexcept
     {
