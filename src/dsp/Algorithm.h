@@ -6,7 +6,7 @@
 
 namespace bedridden::dsp {
 
-/// The "Blood Bucket" personality: how Osc A and Osc B are combined into a
+/// how Osc A and Osc B are combined into a
 /// single modulator that drives Osc C.
 enum class Algorithm : int
 {
