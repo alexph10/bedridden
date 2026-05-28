@@ -1,0 +1,49 @@
+# ---- Build artifacts ----
+build/
+out/
+cmake-build-*/
+_deps/
+CMakeFiles/
+CMakeCache.txt
+CMakeUserPresets.json
+cmake_install.cmake
+install_manifest.txt
+Testing/
+*.vcxproj.user
+*.sln
+*.suo
+*.user
+
+# ---- JUCE-generated ----
+JuceLibraryCode/
+Builds/
+juce_*.h.in
+
+# ---- IDEs ----
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ---- Compiled binaries / plugin bundles ----
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.exp
+*.pdb
+*.exe
+*.so
+*.dylib
+*.vst3/
+*.component/
+*.aaxplugin/
+*.app/
+
+# ---- Local config ----
+.env
+.local/
