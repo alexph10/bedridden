@@ -18,14 +18,23 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
-# Fetch JUCE.
-include(cmake/FetchJUCE.cmake)
+# ---- Options ----
+option(BEDRIDDEN_BUILD_PLUGIN "Build the VST3/Standalone JUCE plugin" ON)
+option(BEDRIDDEN_BUILD_DLL    "Build the reusable BedriddenDSP shared library" ON)
+option(BEDRIDDEN_BUILD_TESTS  "Build unit tests"                                ON)
 
-# Main plugin target lives under src/.
-add_subdirectory(src)
+# Reusable DSP shared library (BedriddenDSP.dll on Windows).
+if(BEDRIDDEN_BUILD_DLL)
+    add_subdirectory(dsplib)
+endif()
 
-# Tests (opt-in).
-option(BEDRIDDEN_BUILD_TESTS "Build unit tests" ON)
+# JUCE plugin (Bedridden.vst3 + standalone). VST3 is itself a DLL on Windows.
+if(BEDRIDDEN_BUILD_PLUGIN)
+    include(cmake/FetchJUCE.cmake)
+    add_subdirectory(src)
+endif()
+
+# Tests.
 if(BEDRIDDEN_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
